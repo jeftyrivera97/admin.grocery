@@ -28,10 +28,10 @@ class CompraController extends Controller
             return redirect('/login');
         }
 
-        $mes="Noviembre";
+        $mes="Diciembre";
         $hoy = Carbon::today(); 
-        $fecha_inicial="2021-11-01";
-        $fecha_final= "2021-11-30";
+        $fecha_inicial="2021-12-01";
+        $fecha_final= "2021-12-31";
         $fechaAno="2021-01-01";
         $year="2021";
 

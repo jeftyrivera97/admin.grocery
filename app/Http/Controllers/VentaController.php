@@ -30,10 +30,10 @@ class VentaController extends Controller
        
         
       
-        $mes="Octubre";
+        $mes="Diciembre";
         $hoy = Carbon::today(); 
-        $fecha_inicial="2021-10-01";
-        $fecha_final= "2021-10-31";
+        $fecha_inicial="2021-12-01";
+        $fecha_final= "2021-12-31";
         $fechaAno="2021-01-01";
         $year="2021";
         

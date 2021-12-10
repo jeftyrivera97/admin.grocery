@@ -53,13 +53,14 @@ class HomeController extends Controller
         $articulos= $contadorProductos;
         
         $hora = Carbon::now(); 
-        $fecha_inicial="2021-11-01";
-        $fecha_final="2021-11-30";
-        $mes= "Noviembre";
+        $fecha_inicial="2021-12-01";
+        $fecha_final="2021-12-31";
+        $mes= "Diciembre";
         $year="2021";
-        $fecha_inicialP="2021-10-01";
-        $fecha_finalP="2021-10-31";
+        $fecha_inicialP="2021-11-01";
+        $fecha_finalP="2021-11-31";
         $fecha_inicialAnual="2021-01-01";
+       
        
 
         $empresas=Empresa::where('id_empresa','1')->first();

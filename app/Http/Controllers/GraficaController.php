@@ -42,8 +42,8 @@ class GraficaController extends Controller
     public function graficasVarias()
     {
 
-        $fecha_inicial="2021-11-01";
-        $fecha_final="2021-11-30"; 
+        $fecha_inicial="2021-12-01";
+        $fecha_final="2021-12-31"; 
 
         $compras=Compra::where('fecha', '>=', $fecha_inicial)->where('fecha', '<=', $fecha_final)->sum('total');
         $ventas=Ingreso::where('fecha', '>=', $fecha_inicial)->where('fecha', '<=', $fecha_final)->sum('total');
@@ -72,6 +72,7 @@ class GraficaController extends Controller
         $septiembre=Ingreso::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubre=Ingreso::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembre=Ingreso::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-30')->sum('total');
+        $diciembre=Ingreso::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
      
         $collection = collect([
            
@@ -86,6 +87,7 @@ class GraficaController extends Controller
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
 
          
         ]);
@@ -108,6 +110,7 @@ class GraficaController extends Controller
         $septiembre=Planilla::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubre=Planilla::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembre=Planilla::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-30')->sum('total');
+        $diciembre=Planilla::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
       
         $collection = collect([
            
@@ -122,6 +125,7 @@ class GraficaController extends Controller
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
 
          
         ]);
@@ -143,6 +147,7 @@ class GraficaController extends Controller
         $septiembre=Gasto::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubre=Gasto::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembre=Gasto::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-30')->sum('total');
+        $diciembre=Gasto::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
      
      
         $collection = collect([
@@ -158,6 +163,7 @@ class GraficaController extends Controller
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],  
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
         ]);
         
        return response(json_encode($collection),200)->header('Content-type','text/plain');
@@ -178,6 +184,7 @@ class GraficaController extends Controller
         $septiembre=Compra::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubre=Compra::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembre=Compra::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-30')->sum('total');
+        $diciembre=Compra::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
         
      
         $collection = collect([
@@ -193,6 +200,7 @@ class GraficaController extends Controller
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],  
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
         ]);
         
        return response(json_encode($collection),200)->header('Content-type','text/plain');
@@ -203,7 +211,7 @@ class GraficaController extends Controller
     public function proveedores(Request $request)
     {
         $fecha_inicial="2021-01-01";
-        $fecha_final="2021-11-30";
+        $fecha_final="2021-12-31";
         $compras=[];
         $proveedores= Proveedor::all();
         $contador= count($proveedores);
@@ -227,7 +235,7 @@ class GraficaController extends Controller
     public function categoriasG(Request $request)
     {
         $fecha_inicial="2021-01-01";
-        $fecha_final="2021-11-30";
+        $fecha_final="2021-12-31";
         $gastos=[];
         $categorias= GastoCategoria::all();
         $contador= count($categorias);
@@ -254,8 +262,8 @@ class GraficaController extends Controller
     public function ventasSemanal(Request $request)
     {
 
-        $mes="nov";
-        $numMes="11";
+        $mes="dic";
+        $numMes="12";
         $year="2021";
         $semana1=Ingreso::where('fecha', '>=', "$year-$numMes-01")->where('fecha', '<=', "$year-$numMes-07")->sum('total');
         $semana2=Ingreso::where('fecha', '>=', "$year-$numMes-08")->where('fecha', '<=', "$year-$numMes-14")->sum('total');
@@ -278,8 +286,8 @@ class GraficaController extends Controller
     public function comprasSemanal(Request $request)
     {
     
-        $mes="nov";
-        $numMes="11";
+        $mes="dic";
+        $numMes="12";
         $year="2021";
         $semana1=Compra::where('fecha', '>=', "$year-$numMes-01")->where('fecha', '<=', "$year-$numMes-07")->sum('total');
         $semana2=Compra::where('fecha', '>=', "$year-$numMes-08")->where('fecha', '<=', "$year-$numMes-14")->sum('total');
@@ -302,8 +310,8 @@ class GraficaController extends Controller
     public function gastosSemanal(Request $request)
     {     
 
-        $mes="nov";
-        $numMes="11";
+        $mes="dic";
+        $numMes="12";
         $year="2021";
         $semana1=Gasto::where('fecha', '>=', "$year-$numMes-01")->where('fecha', '<=', "$year-$numMes-07")->sum('total');
         $semana2=Gasto::where('fecha', '>=', "$year-$numMes-08")->where('fecha', '<=', "$year-$numMes-14")->sum('total');
@@ -323,8 +331,8 @@ class GraficaController extends Controller
     public function planillaSemanal(Request $request)
     {
 
-        $mes="nov";
-        $numMes="11";
+        $mes="dic";
+        $numMes="12";
         $year="2021";
         $semana1=Planilla::where('fecha', '>=', "$year-$numMes-01")->where('fecha', '<=', "$year-$numMes-07")->sum('total');
         $semana2=Planilla::where('fecha', '>=', "$year-$numMes-08")->where('fecha', '<=', "$year-$numMes-14")->sum('total');
@@ -346,20 +354,20 @@ class GraficaController extends Controller
     public function gastosAnual(Request $request)
     {     
     
-        $junio=Gasto::where('fecha', '>=', '2021-06-01')->where('fecha', '<=', '2021-06-30')->sum('total');
         $julio=Gasto::where('fecha', '>=', '2021-07-01')->where('fecha', '<=', '2021-07-31')->sum('total');
         $agosto=Gasto::where('fecha', '>=', '2021-08-01')->where('fecha', '<=', '2021-08-31')->sum('total');
         $septiembre=Gasto::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubre=Gasto::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembre=Gasto::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-30')->sum('total');
+        $diciembre=Gasto::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
      
         $collection = collect([
-            ['descripcion' => 'Junio', 'total' => $junio],
             ['descripcion' => 'Julio', 'total' => $julio],
             ['descripcion' => 'Agosto', 'total' => $agosto],
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
         ]);
 
        return response(json_encode($collection),200)->header('Content-type','text/plain');  
@@ -373,40 +381,41 @@ class GraficaController extends Controller
     public function planillaAnual(Request $request)
     {     
        
-        $junio=Planilla::where('fecha', '>=', '2021-06-01')->where('fecha', '<=', '2021-06-30')->sum('total');
         $julio=Planilla::where('fecha', '>=', '2021-07-01')->where('fecha', '<=', '2021-07-31')->sum('total');
         $agosto=Planilla::where('fecha', '>=', '2021-08-01')->where('fecha', '<=', '2021-08-31')->sum('total');
         $septiembre=Planilla::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubre=Planilla::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembre=Planilla::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-31')->sum('total');
+        $diciembre=Planilla::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
      
         $collection = collect([
-            ['descripcion' => 'Junio', 'total' => $junio],
             ['descripcion' => 'Julio', 'total' => $julio],
             ['descripcion' => 'Agosto', 'total' => $agosto],
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
         ]);
        return response(json_encode($collection),200)->header('Content-type','text/plain');
         
     }  
     public function ingresosAnual(Request $request)
     {
-        $junio=Ingreso::where('fecha', '>=', '2021-06-01')->where('fecha', '<=', '2021-06-30')->sum('total');
+      
         $julio=Ingreso::where('fecha', '>=', '2021-07-01')->where('fecha', '<=', '2021-07-31')->sum('total');
         $agosto=Ingreso::where('fecha', '>=', '2021-08-01')->where('fecha', '<=', '2021-08-31')->sum('total');
         $septiembre=Ingreso::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubre=Ingreso::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembre=Ingreso::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-31')->sum('total');
+        $diciembre=Ingreso::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
 
         $collection = collect([
-            ['descripcion' => 'Junio', 'total' => $junio],
             ['descripcion' => 'Julio', 'total' => $julio],
             ['descripcion' => 'Agosto', 'total' => $agosto],
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
         ]);
         
         
@@ -420,7 +429,7 @@ class GraficaController extends Controller
     {
 
         $fecha_inicial="2021-01-01";
-        $fecha_final="2021-11-31";
+        $fecha_final="2021-12-31";
        
         $ingresos=Ingreso::where('fecha', '>=', $fecha_inicial)->where('fecha', '<=', $fecha_final)->sum('total');
         $compras=Compra::where('fecha', '>=', $fecha_inicial)->where('fecha', '<=', $fecha_final)->sum('total');
@@ -441,35 +450,35 @@ class GraficaController extends Controller
     public function egresosAnual(Request $request)
     {
 
-        $junioGasto=Gasto::where('fecha', '>=', '2021-06-01')->where('fecha', '<=', '2021-06-30')->sum('total');
         $julioGasto=Gasto::where('fecha', '>=', '2021-07-01')->where('fecha', '<=', '2021-07-31')->sum('total');
         $agostoGasto=Gasto::where('fecha', '>=', '2021-08-01')->where('fecha', '<=', '2021-08-31')->sum('total');
         $septiembreGasto=Gasto::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubreGasto=Gasto::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembreGasto=Gasto::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-30')->sum('total');
+        $diciembreGasto=Gasto::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
 
-        $junioCompra=Compra::where('fecha', '>=', '2021-06-01')->where('fecha', '<=', '2021-06-30')->sum('total');
-        $junioCompra=Compra::where('fecha', '>=', '2021-07-01')->where('fecha', '<=', '2021-07-31')->sum('total');
+        $julioCompra=Gasto::where('fecha', '>=', '2021-07-01')->where('fecha', '<=', '2021-07-31')->sum('total');
         $agostoCompra=Compra::where('fecha', '>=', '2021-08-01')->where('fecha', '<=', '2021-08-31')->sum('total');
         $septiembreCompra=Compra::where('fecha', '>=', '2021-09-01')->where('fecha', '<=', '2021-09-31')->sum('total');
         $octubreCompra=Compra::where('fecha', '>=', '2021-10-01')->where('fecha', '<=', '2021-10-31')->sum('total');
         $noviembreCompra=Compra::where('fecha', '>=', '2021-11-01')->where('fecha', '<=', '2021-11-30')->sum('total');
+        $diciembreCompra=Compra::where('fecha', '>=', '2021-12-01')->where('fecha', '<=', '2021-12-31')->sum('total');
 
-        $junio=$junioCompra+$junioGasto;
-        $julio= $junioCompra+$julioGasto;
+        $julio= $julioCompra+$julioGasto;
         $agosto= $agostoCompra+$agostoGasto;
         $septiembre=$septiembreCompra+$septiembreGasto;
         $octubre= $octubreGasto+$octubreCompra;
         $noviembre= $noviembreGasto+$noviembreCompra;
+        $diciembre=$diciembreCompra+$diciembreGasto;
 
         
         $collection = collect([
-            ['descripcion' => 'Junio', 'total' => $junio],
             ['descripcion' => 'Julio', 'total' => $julio],
             ['descripcion' => 'Agosto', 'total' => $agosto],
             ['descripcion' => 'Septiembre', 'total' => $septiembre],
             ['descripcion' => 'Octubre', 'total' => $octubre],
             ['descripcion' => 'Noviembre', 'total' => $noviembre],
+            ['descripcion' => 'Diciembre', 'total' => $diciembre],
         ]);
         
         
@@ -481,7 +490,7 @@ class GraficaController extends Controller
     {
        
         $fecha_inicial="2021-09-01";
-        $fecha_final="2021-11-30";
+        $fecha_final="2021-12-31";
        
         $compras=[];
         $categorias= CompraCategoria::all();
@@ -505,7 +514,7 @@ class GraficaController extends Controller
     public function comprasProveedores(Request $request)
     {
         $fecha_inicial="2021-09-01";
-        $fecha_final="2021-11-30";
+        $fecha_final="2021-12-31";
         $compras=[];
         $proveedores= Proveedor::all();
         $contador= count($proveedores);

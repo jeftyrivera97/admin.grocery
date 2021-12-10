@@ -23,10 +23,10 @@ class IngresoController extends Controller
      */
     public function index()
     {
-        $mes="Noviembre";
+        $mes="Diciembre";
         $hoy = Carbon::today(); 
-        $fecha_inicial="2021-11-01";
-        $fecha_final= "2021-11-30";
+        $fecha_inicial="2021-12-01";
+        $fecha_final= "2021-12-31";
         $fechaAno="2021-01-01";
         $year="2021";
         
@@ -72,51 +72,8 @@ class IngresoController extends Controller
         //
     }
 
-    public function ejecutar()
-    {
-        $ingresos=Ingreso::all();
-        
-        foreach($ingresos as $ingreso)
-        {
-            DB::beginTransaction();
-            $ingresosP = new PintadoIngreso();
-            $ingresosP-> id_ingreso= $ingreso->id_ingreso;
-            $ingresosP-> id_pintado= 1;
-            DB::Commit();
-            $ingresosP->save();
-        }
+   
 
-        return redirect('ingreso')->with('message', 'Ingresados!!!!!!!');
-
-    }
-
-    public function crear(Request $request)
-    {
-        if(!Auth::check())
-        {
-            return redirect('/login');
-        }
-        $id_categoria= request('id_categoria');
-
-        $categorias=IngresoCategoria::where('id',$id_categoria)->first();
-        $autos=Auto::where('id_estado',1)->get();
-        $servicios=Servicio::where('id_estado',1)->get();
-
-        if($id_categoria!=1){
-            return view('ingreso.create',compact('categorias','autos','servicios'));
-
-        }
-        if($id_categoria=1)
-        {
-            return view('ingreso.crearServicio',compact('categorias','autos','servicios'));
-
-        }
-        
-        
-        
-        
-         
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -153,77 +110,7 @@ class IngresoController extends Controller
         }
     }
 
-    public function guardar(Request $request)
-    {
-
-        $hora=Carbon::now(); 
-        DB::beginTransaction();
-           try
-            {  
-
-                $cliente= request('nombre_cliente');
-                if( $existe= Cliente::where('nombre',$cliente)->exists())
-                {
-                    $buscar= Cliente::where('nombre',$cliente)->first();
-                    $id_cliente= $buscar->id_cliente;
-                }
-                else{
-                    DB::beginTransaction();
-                    $clientes = new Cliente();
-                    $clientes-> codigo_cliente= rand(1,1000);
-                    $clientes-> nombre = $cliente;
-                    $clientes-> id_estado = 1;           
-                    DB::Commit();
-                    $clientes->save();
-                    $id_cliente=$clientes->id_cliente;
-                }
-
-                $pintados = new Pintado();
-                $pintados-> fecha = request ('fecha');
-                $pintados-> fecha_ingreso = request ('fecha_ingreso');
-                $pintados-> fecha_salida = request ('fecha_salida');
-                $pintados-> id_auto = request ('id_auto');
-                $pintados-> id_cliente = $id_cliente;
-                $pintados-> id_servicio = request ('id_servicio');
-                $pintados-> descripcion = request ('labor');
-                $pintados-> color = request ('color');
-                $pintados-> placa = request ('placa');
-                $pintados-> año = request ('año');
-                $pintados-> id_estado = 4;
-                $pintados-> id_usuario= auth()->user()->id;
-                DB::Commit();
-                $pintados->save();
-                $id_pintado=$pintados->id_pintado;
-               
-                DB::beginTransaction();
-                $ingresos = new Ingreso();
-                $ingresos-> fecha= request ('fecha');
-                $ingresos-> fechaHora= $hora;
-                $ingresos-> id_categoria = request ('id_categoria');
-                $ingresos-> descripcion =request ('descripcion');
-                $ingresos-> total =request ('total');
-                $ingresos-> id_usuario= auth()->user()->id;
-                DB::Commit();
-                $ingresos->save();
-                $id_ingreso=$ingresos->id_ingreso;
-               
-                DB::beginTransaction();
-                $ingresoPintado = new PintadoIngreso();
-                $ingresoPintado-> id_pintado= $id_pintado;  
-                $ingresoPintado-> id_ingreso= $id_ingreso;
-               
-                DB::Commit();
-                $ingresoPintado->save();  
-
-                return redirect('ingreso')->with('message', 'Ingreso creado con exito');
-                
-            }
-            catch(\Exception $e)
-            {
-                DB::Rollback();
-                echo 'Error: ' .$e->getMessage();
-            }
-    }
+   
 
     /**
      * Display the specified resource.
