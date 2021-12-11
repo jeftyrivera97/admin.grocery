@@ -77,7 +77,7 @@
                   </div>
                   <!-- /.card-body -->
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-info active"><i class="far fa-save"></i> Guardar</button>     
+                    <button type="submit" class="btn btn-info active"><i class="far fa-save"></i> Exportar</button>     
                   </div>
               </div>
               <!-- /.card -->

@@ -55,12 +55,12 @@ class ReporteController extends Controller
         }
         $hoy = Carbon::now();
         $fecha= request ('fecha');
-        $ingresos = Ingreso::where('fecha',$fecha)->orderBy('fechaHora')->get();
+        $ventas = Ingreso::where('fecha', '>=', $fecha)->where('id_categoria',1)->orderBy('fechaHora')->get();
         $total = DB::table('ingresos')->where('fecha', $fecha)->sum('total');
         $empresa= DB::table('empresas')->where('id_empresa','1')->first();
         $total= number_format($total, 2);
         
-        $pdf=PDF::loadView('pdf.ventas.ventaDia',compact('ingresos','total','hoy','empresa','fecha'));
+        $pdf=PDF::loadView('pdf.ventas.ventaDia',compact('ventas','total','hoy','empresa','fecha'));
         $pdf->setPaper('Letter', 'landscape');
         return $pdf->download("Ingresos Periodo $fecha.pdf");
     }
@@ -89,11 +89,11 @@ class ReporteController extends Controller
         $fechaFinal= request ('fecha_final');
         $total = Ingreso::where('fecha', '>=', $fechaInicial)->where('fecha', '<=', $fechaFinal)->sum('total');
 
-        $ingresos = Ingreso::where('fecha', '>=', $fechaInicial)->where('fecha', '<=', $fechaFinal)->orderBy('fechaHora')->get();
+        $ventas = Ingreso::where('fecha', '>=', $fechaInicial)->where('fecha', '<=', $fechaFinal)->where('id_categoria',1)->orderBy('fechaHora')->get();
         $total= number_format($total, 2);
 
         
-        $pdf=PDF::loadView('pdf.ventas.ventaRango',compact('ingresos','total','hoy','empresa','fechaInicial','fechaFinal'));
+        $pdf=PDF::loadView('pdf.ventas.ventaRango',compact('ventas','total','hoy','empresa','fechaInicial','fechaFinal'));
         $pdf->setPaper('Letter', 'landscape');
         return $pdf->download("Ingresos Periodo $fechaInicial al $fechaFinal.pdf");
     }

@@ -20,7 +20,8 @@ class CreateFolioFacturasTable extends Migration
             $table->date('fecha_inicial');
             $table->date('fecha_final');
             $table->double('contador');
-            $table->integer('tipo');
+            $table->double('contador_temp');
+            $table->double('restantes');
             $table->unsignedBigInteger('id_estado');
 
             $table->foreign('id_estado')->references('id')->on('estados');
