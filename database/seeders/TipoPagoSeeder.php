@@ -21,7 +21,7 @@ class TipoPagoSeeder extends Seeder
             'descripcion' => 'Efectivo',
         ]);
         DB::table('tipo_pagos')->insert([
-            'descripcion' => 'Pos',
+            'descripcion' => 'POS',
         ]);
         DB::table('tipo_pagos')->insert([
             'descripcion' => 'Credito',
