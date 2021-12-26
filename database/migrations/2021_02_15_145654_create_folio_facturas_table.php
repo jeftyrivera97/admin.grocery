@@ -22,6 +22,7 @@ class CreateFolioFacturasTable extends Migration
             $table->double('contador');
             $table->double('contador_temp');
             $table->double('restantes');
+            $table->string('tipo');
             $table->unsignedBigInteger('id_estado');
 
             $table->foreign('id_estado')->references('id')->on('estados');

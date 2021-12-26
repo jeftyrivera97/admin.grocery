@@ -21,11 +21,14 @@ class DatabaseSeeder extends Seeder
             EmpresaSeeder::class,
             TipoCuentaSeeder::class,
             TipoPagoSeeder::class,
-            CategoriaIngresosSeeder::class,
+            IngresoCategoriaSeeder::class,
+            EgresoCategoriaSeeder::class,
             EstadoCuentaSeeder::class,
             ProductoCategoriaSeeder::class,
             GastoCategoriaSeeder::class,
             CompraCategoriaSeeder::class,
+            IngresoEgresoTipoSeeder::class,
+            FolioFacturaSeeder::class,
         ]);
     }
 }

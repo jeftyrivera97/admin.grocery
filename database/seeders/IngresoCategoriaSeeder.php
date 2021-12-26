@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class CategoriaIngresosSeeder extends Seeder
+class IngresoCategoriaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,21 +17,17 @@ class CategoriaIngresosSeeder extends Seeder
     public function run()
     {
         DB::table('ingreso_categorias')->insert([
+            'descripcion' => 'Prestacion de Servicios',
+            'id_estado' => 1,
+        ]);
+
+        DB::table('ingreso_categorias')->insert([
             'descripcion' => 'Venta de Productos',
             'id_estado' => 1,
         ]);
-        DB::table('ingreso_categorias')->insert([
-            'descripcion' => 'Deposito',
-            'id_estado' => 1,
-        ]);
 
         DB::table('ingreso_categorias')->insert([
-            'descripcion' => 'Prestamo Bancario',
-            'id_estado' => 1,
-        ]);
-
-        DB::table('ingreso_categorias')->insert([
-            'descripcion' => 'Prestamo Personal',
+            'descripcion' => 'Prestamo',
             'id_estado' => 1,
         ]);
 

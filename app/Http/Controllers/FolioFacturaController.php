@@ -21,7 +21,7 @@ class FolioFacturaController extends Controller
             return redirect('/login');
         }
 
-        $folios = FolioFactura::where('id_estado',1)->where('tipo',1)->get();
+        $folios = FolioFactura::where('id_estado',1)->get();
         return view('folio.index', compact('folios'));
     }
 
@@ -49,9 +49,11 @@ class FolioFacturaController extends Controller
      */
     public function store(Request $request)
     {
+        $inicio=request ('inicio');
+        $final=request ('final');
+        $restantes= ($final+1)-$inicio;
         try
         {
-
             DB::beginTransaction();
             $folios = new FolioFactura();
             $folios-> inicio = request ('inicio');
@@ -59,33 +61,20 @@ class FolioFacturaController extends Controller
             $folios-> fecha_inicial = request ('fecha_inicial');
             $folios-> fecha_final = request ('fecha_final');
             $folios-> contador =request ('inicio');
-            $folios-> tipo = 1;
-            $folios-> id_estado = 1;
-            DB::Commit();
-            $folios->save();
-
-            DB::beginTransaction();
-            $folios = new FolioFactura();
-            $folios-> inicio = request ('inicio');
-            $folios-> final = request ('final');
-            $folios-> fecha_inicial = request ('fecha_inicial');
-            $folios-> fecha_final = request ('fecha_final');
-            $folios-> contador =request ('inicio');
-            $folios-> tipo = 0;
+            $folios-> contador_temp =request ('inicio');
+            $folios-> restantes =$restantes;
+            $folios-> tipo ="Contado";
             $folios-> id_estado = 1;
             DB::Commit();
             $folios->save();
 
             return redirect('folio')->with(['message' => 'Folio activado con exito!', 'alert' => 'alert-success']);
-         
-            
 
         }
         catch(\Exception $e)
         {
             DB::Rollback();
             echo 'Error: ' .$e->getMessage();
-          // return redirect()->back()->with(['message' => 'ERROR. Intente cambiar Codigo', 'alert' => 'alert-danger']);
         }
     }
 

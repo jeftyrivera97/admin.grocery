@@ -12,6 +12,8 @@ use App\Models\Transaccion;
 use App\Models\Credito;
 use App\Models\Caja;
 use App\Models\FolioFactura;
+use App\Models\Recibo;
+use App\Models\ReciboDetalle;
 use App\Models\FacturaCredito;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
@@ -182,9 +184,9 @@ class FacturaController extends Controller
         
         if($id_cliente==2 && $tipo_factura=="Contado") //CONTADO 2
         {
-            $folio= FolioFactura::where('id_estado',1)->first(); 
+            $folio= FolioFactura::where('id_estado',1)->where('tipo','Contado')->first();  
             $id_folio= $folio->id_folio;
-            $codigo_factura=$folio->contador_temp;
+            $codigo_recibo=$folio->contador_temp;
 
             DB::beginTransaction();
 
@@ -192,7 +194,7 @@ class FacturaController extends Controller
             {
            
                 $recibos = new Recibo();
-                $recibos-> codigo_recibo = $codigo_factura;
+                $recibos-> codigo_recibo = $codigo_recibo;
                 $recibos-> fecha= $fecha;
                 $recibos-> fechaHora= $hora;
                 $recibos-> id_cliente = request ('id_cliente');
@@ -202,11 +204,12 @@ class FacturaController extends Controller
                 $recibos-> id_usuario= auth()->user()->id;
                 DB::Commit();
                 $recibos->save();
+              
 
                 if($recibos->save())
                 {
-                    $info=Recibo::where('codigo_recibo',$codigo_factura)->first();
-                    $id_factura=$info->id_recibo;
+                    $info=Recibo::where('codigo_recibo',$codigo_recibo)->first();
+                    $id_recibo=$info->id_recibo;
 
                     $linea = $request->input('productos.*.linea_detalles');
                     $count = count($linea);
@@ -249,17 +252,6 @@ class FacturaController extends Controller
                     $folios-> contador_temp = $codigo_factura+1;
                     DB::Commit();
                     $folios->update();
-                       
-                    $ventas = new Venta();
-                    $ventas-> fecha= $fecha;
-                    $ventas-> fechaHora= $hora;
-                    $ventas-> id_cliente = request ('id_cliente');
-                    $ventas-> tipo_pago = $tp;
-                    $facturas-> id_estado = $ep;
-                    $ventas-> total=$total_factura;
-                    $ventas-> id_usuario= auth()->user()->id;
-                    DB::Commit();
-                    $ventas->save();
 
                     $t=request('total');
     
@@ -282,7 +274,7 @@ class FacturaController extends Controller
                     $hoy = date("Y-m-d");
                     $empresa= DB::table('empresas')->where('id_empresa','1')->first();
 
-                    $folio= FolioFactura::where('id_estado',1)->first();
+                    $folio= FolioFactura::where('id_estado',1)->where('tipo','Contado')->first(); 
                     $pdf=PDF::loadView('pdf.facturas.facturaContado2',compact('efe','cam','articulos','facturas','detalles','hoy','empresa','folio'));
                     return $pdf->stream('facturaImprimir.pdf');
                     
@@ -299,9 +291,10 @@ class FacturaController extends Controller
 
         if($id_cliente!=2 && $tipo_factura=="Contado") //CONTADO
         {    
-            $folio= FolioFactura::where('id_estado',1)->where('tipo',1)->first(); 
+            $folio= FolioFactura::where('id_estado',1)->where('tipo','Contado')->first(); 
             $id_folio= $folio->id_folio;
             $codigo_factura=$folio->contador;
+            $restantes= $folio->restantes-1;
 
             DB::beginTransaction();
 
@@ -331,25 +324,14 @@ class FacturaController extends Controller
 
                 if($facturas->save())
                 {
-                    $ventas = new Venta();
-                    $ventas-> fecha= $fecha;
-                    $ventas-> fechaHora= $hora;
-                    $ventas-> id_cliente = request ('id_cliente');
-                    $ventas-> tipo_pago = $tp;
-                    $facturas-> id_estado = $ep;
-                    $ventas-> total=$total_factura;
-                    $ventas-> id_usuario= auth()->user()->id;
-                    DB::Commit();
-                    $ventas->save();
-
+                  
                     $folios =  FolioFactura::findOrFail($id_folio);
                     $folios-> contador = $codigo_factura+1;
+                    $folios->restantes=$restantes;
                     DB::Commit();
                     $folios->update();
 
-                    
-
-                    if($tipo_pago=="POS")
+                    if($tipo_pago==="POS")
                     {
                         $info=Factura::where('codigo_factura',$codigo_factura)->first();
                         $id=$info->id_factura;
@@ -373,7 +355,7 @@ class FacturaController extends Controller
                         $cajas->save();
                     }
 
-                    if($tipo_pago=="Efectivo")
+                    if($tipo_pago==="Efectivo")
                     {
                         
                         $t=request('total');
@@ -438,7 +420,7 @@ class FacturaController extends Controller
                     $hoy = date("Y-m-d");
                     $empresa= DB::table('empresas')->where('id_empresa','1')->first();
 
-                    $folio= FolioFactura::where('id_estado',1)->where('tipo',1)->first();
+                    $folio= FolioFactura::where('id_estado',1)->where('tipo','Contado')->first(); 
                     $pdf=PDF::loadView('pdf.facturas.facturaContado',compact('efe','cam','articulos','facturas','detalles','hoy','empresa','folio'));
                     return $pdf->stream('facturaImprimir.pdf');
             
@@ -460,7 +442,7 @@ class FacturaController extends Controller
             
             try
             {
-                $folio= FolioFactura::where('id_estado',1)->where('tipo',1)->first(); 
+                $folio= FolioFactura::where('id_estado',2)->where('tipo','Credito')->first(); 
                 $id_folio= $folio->id_folio;
 
                 DB::beginTransaction();
@@ -575,8 +557,18 @@ class FacturaController extends Controller
                             $creditos-> saldo = $saldoNuevo;
                             DB::Commit();
                             $creditos->update();
+
                             
-                            $folio= FolioFactura::where('id_estado',1)->where('tipo',1)->first();
+                            $info=Factura::where('codigo_factura',$codigo_factura)->first();
+                            $id_factura=$info->id_factura;
+                            $articulos=DB::table('factura_detalles')->where('id_factura',$id_factura)->sum('cantidad');
+                        
+                            $facturas= Factura::where('id_factura',$id_factura)->first();
+                            $detalles= FacturaDetalle::where('id_factura',$id_factura)->get();
+                            $hoy = date("Y-m-d");
+                            $empresa= DB::table('empresas')->where('id_empresa','1')->first();
+        
+                            $folio= FolioFactura::where('id_estado',1)->where('tipo','Credito')->first(); 
                             $pdf=PDF::loadView('pdf.facturas.facturaCredito',compact('efe','cam','articulos','facturas','detalles','hoy','empresa','folio'));
                             return $pdf->stream('facturaImprimir.pdf');
                         }
@@ -662,7 +654,7 @@ class FacturaController extends Controller
 
         try
         {
-            $folio= FolioFactura::where('id_estado',1)->where('tipo',1)->first();
+            $folio= FolioFactura::where('id_estado',1)->first();
             $ultimo= $folio->contador;
             $id_folio= $folio->id_folio;
             $codigo_factura=$ultimo+1;
