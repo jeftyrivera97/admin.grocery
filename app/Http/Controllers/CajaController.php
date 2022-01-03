@@ -236,7 +236,6 @@ class CajaController extends Controller
                 $ventas-> fecha= $fecha;
                 $ventas-> fechaHora= $HoraFinal;
                 $ventas-> id_categoria= 2;
-                $ventas-> id_tipo= 1;
                 $ventas-> descripcion = request ('descripcion');
                 $ventas-> total = request('total_caja');
                 $ventas-> id_usuario= auth()->user()->id;

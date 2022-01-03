@@ -18,13 +18,11 @@ class CreateIngresosTable extends Migration
             $table->date('fecha');
             $table->datetime('fechaHora');
             $table->unsignedBigInteger('id_categoria');
-            $table->unsignedBigInteger('id_tipo');
             $table->string('descripcion')->nullable();
             $table->double('total');
             $table->unsignedBigInteger('id_usuario');
 
             $table->foreign('id_usuario')->references('id')->on('users');
-            $table->foreign('id_tipo')->references('id')->on('ingreso_egreso_tipos');
             $table->foreign('id_categoria')->references('id')->on('ingreso_categorias');
         });
     }
