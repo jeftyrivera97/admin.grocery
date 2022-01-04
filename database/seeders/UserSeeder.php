@@ -19,23 +19,23 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Administrador',
-            'email' => 'admin@elbuenamigosouvenir.site',
-            'password' => bcrypt('Adminsouvenir2021'),
+            'email' => 'adm1n@elbuenamigosouvenir.site',
+            'password' => bcrypt('@dm1ns0uv3n1r2022'),
         ]);
         DB::table('users')->insert([
-            'name' => 'Romell Romero',
-            'email' => 'cajero1@elbuenamigosouvenir.site',
-            'password' => bcrypt('Romell2021souvenir'),
+            'name' => 'Romell',
+            'email' => 'r0m311@elbuenamigosouvenir.site',
+            'password' => bcrypt('R0m311s0uv3n1r2022'),
         ]);
         DB::table('users')->insert([
-            'name' => 'Mayra Hernandez',
-            'email' => 'cajero2@elbuenamigosouvenir.site',
-            'password' => bcrypt('Mayra2021souvenir'),
+            'name' => 'Mayra',
+            'email' => 'ma1ra@elbuenamigosouvenir.site',
+            'password' => bcrypt('M@yr@s0uv3n1r2022'),
         ]);
         DB::table('users')->insert([
             'name' => 'Sistema',
-            'email' => 'sistema@elbuenamigosouvenir.site',
-            'password' => bcrypt('Pontiac2016'),
+            'email' => 's1st3ma@elbuenamigosouvenir.site',
+            'password' => bcrypt('Jriver@s1st3m@s2022'),
         ]);
     }
 }
